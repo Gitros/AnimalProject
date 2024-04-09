@@ -10,11 +10,10 @@ string animalNickname = "";
 int maxPets = 8;
 string? readResult;
 string menuSelection = "";
+int petAge;
 
 // array used to store runtime data, there is no persisted data
 string[,] ourAnimals = new string[maxPets, 6];
-
-// TODO: Convert the if-elseif-else construct to a switch statement
 
 // create some initial ourAnimals array entries
 for (int i = 0; i < maxPets; i++)
@@ -76,10 +75,8 @@ for (int i = 0; i < maxPets; i++)
 }
 
 // display the top-level menu options
-
 do
 {
-
     Console.Clear();
 
     Console.WriteLine("Welcome to the Contoso PetFriends app. Your main menu options are:");
@@ -100,12 +97,7 @@ do
         menuSelection = readResult.ToLower();
     }
 
-    // Console.WriteLine($"You selected menu option {menuSelection}.");
-    // Console.WriteLine("Press the Enter key to continue");
-
-    // pause code execution
-    // readResult = Console.ReadLine();
-
+    // switch case to process the selected menu option
     switch (menuSelection)
     {
         case "1":
@@ -117,16 +109,25 @@ do
                     Console.WriteLine();
                     for (int j = 0; j < 6; j++)
                     {
-                        Console.WriteLine(ourAnimals[i, j]);
+                        Console.WriteLine(ourAnimals[i, j].ToString());
                     }
                 }
             }
-            Console.WriteLine("Press the Enter key to continue.");
+            Console.WriteLine("\n\rPress the Enter key to continue.");
             readResult = Console.ReadLine();
             break;
 
         case "2":
             // Add a new animal friend to the ourAnimals array
+            //
+            // The ourAnimals array contains
+            //    1. the species (cat or dog). a required field
+            //    2. the ID number - for example C17
+            //    3. the pet's age. can be blank at initial entry.
+            //    4. the pet's nickname. can be blank.
+            //    5. a description of the pet's physical appearance. can be blank.
+            //    6. a description of the pet's personality. can be blank.
+
             string anotherPet = "y";
             int petCount = 0;
             for (int i = 0; i < maxPets; i++)
@@ -155,7 +156,6 @@ do
                         animalSpecies = readResult.ToLower();
                         if (animalSpecies != "dog" && animalSpecies != "cat")
                         {
-                            // Console.writeline
                             validEntry = false;
                         }
                         else
@@ -171,7 +171,6 @@ do
                 // get the pet's age. can be ? at initial entry.
                 do
                 {
-                    int petAge;
                     Console.WriteLine("Enter the pet's age or enter ? if unknown");
                     readResult = Console.ReadLine();
                     if (readResult != null)
@@ -189,7 +188,6 @@ do
                 } while (validEntry == false);
 
                 // get a description of the pet's physical appearance/condition - animalPhysicalDescription can be blank.
-
                 do
                 {
                     Console.WriteLine("Enter a physical description of the pet (size, color, gender, weight, housebroken)");
@@ -202,10 +200,9 @@ do
                             animalPhysicalDescription = "tbd";
                         }
                     }
-                } while (animalPhysicalDescription == "");
+                } while (validEntry == false);
 
                 // get a description of the pet's personality - animalPersonalityDescription can be blank.
-
                 do
                 {
                     Console.WriteLine("Enter a description of the pet's personality (likes or dislikes, tricks, energy level)");
@@ -218,14 +215,13 @@ do
                             animalPersonalityDescription = "tbd";
                         }
                     }
-                } while (animalPersonalityDescription == "");
+                } while (validEntry == false);
 
-                // Nickname of the pet
+                // get the pet's nickname. animalNickname can be blank.
                 do
                 {
                     Console.WriteLine("Enter pet's nickname");
                     readResult = Console.ReadLine();
-
                     if (readResult != null)
                     {
                         animalNickname = readResult.ToLower();
@@ -234,7 +230,7 @@ do
                             animalNickname = "tbd";
                         }
                     }
-                } while (animalNickname == "");
+                } while (validEntry == false);
 
                 // store the pet information in the ourAnimals array (zero based)
                 ourAnimals[petCount, 0] = "ID #: " + animalID;
@@ -261,6 +257,7 @@ do
                         }
                     } while (anotherPet != "y" && anotherPet != "n");
                 }
+                //NOTE: The value of anotherPet (either "y" or "n") is evaluated in the while statement expression - at the top of the while loop
             }
 
             if (petCount >= maxPets)
@@ -313,6 +310,7 @@ do
             readResult = Console.ReadLine();
             break;
 
+        default:
+            break;
     }
-
 } while (menuSelection != "exit");
